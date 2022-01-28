@@ -1,0 +1,42 @@
+##################################################################################################
+# mesh-service-b services
+##################################################################################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mesh-service-b-deployment
+  labels:
+    app: mesh-service-b
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mesh-service-b
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: mesh-service-b
+        version: v1
+    spec:
+      containers:
+        - name: mesh-service-b
+          image: yusyscloud/mesh-service-b
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 1015
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mesh-service-b
+  labels:
+    app: mesh-service-b
+    service: mesh-service-b
+spec:
+  ports:
+    - port: 1015
+      name: http
+  selector:
+    app: mesh-service-b
