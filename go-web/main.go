@@ -19,7 +19,7 @@ type User struct {
 
 func main() {
 
-	sidecarUrl := "http://localhost:3001"
+	sidecarUrl := "http://localhost:1014"
 
 	gin.SetMode(gin.ReleaseMode)
 
@@ -36,7 +36,7 @@ func main() {
 		msg := "go-web UP call ServiceMesh gateway --> "
 
 		//调用 ServiceMesh 网关
-		resp, err := http.Get("http://120.92.117.115:31744/api/b")
+		resp, err := http.Get("http://172.16.20.185:30061/api/sc/b")
 		if err != nil {
 			msg = fmt.Sprintf("%v StatusCode:[%v] msg:[%v]", msg, http.StatusInternalServerError, "ERROR:"+err.Error())
 		} else {

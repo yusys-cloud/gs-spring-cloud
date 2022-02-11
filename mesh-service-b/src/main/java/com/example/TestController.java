@@ -15,10 +15,12 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class TestController {
 
-    private static String SPRING_CLOUD_GATEWAY = "http://localhost";
+    //private static String SPRING_CLOUD_GATEWAY = "http://localhost";
+    private static String SPRING_CLOUD_GATEWAY = "http://172.16.20.172";
 
     @GetMapping("/api/sc/b")
     public String apiB() {
+        log.info("[Mesh-service-b UP] ,ready to call spring-cloud gateway "+SPRING_CLOUD_GATEWAY,Thread.currentThread().getName());
         return "[Mesh-service-b UP] response ok call -> " + restTemplate.getForObject(SPRING_CLOUD_GATEWAY + "/sc-service-c/api/sc/c", String.class);
     }
 
