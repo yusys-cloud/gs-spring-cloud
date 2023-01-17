@@ -1,0 +1,10 @@
+server:
+  port: 1015
+
+spring:
+  devtools:
+    restart:
+      additional-paths: /Users/zqy/test/classes/
+
+    remote:
+      secret: mysecret

@@ -55,6 +55,15 @@ docker build -t='yusyscloud/mesh-service-b' .
 docker push yusyscloud/mesh-service-b 
 ```
 
+## 部署
+
+``` 
+kubectl apply -f mesh-service-b-deployment.yaml
+kubectl apply -f gateway.yaml 
+```
+``` 
+kubectl delete -f mesh-service-b-deployment.yaml 
+```
 
 ## POC env
  - 启动sidecar java -jar polyglot-sidecar-1.0-SNAPSHOT.jar --eureka.client.serviceUrl.defaultZone=http://192.168.251.173:8761/eureka

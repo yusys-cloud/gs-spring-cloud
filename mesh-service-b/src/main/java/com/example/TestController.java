@@ -20,7 +20,10 @@ public class TestController {
 
     @GetMapping("/api/sc/b")
     public String apiB() {
-        log.info("[Mesh-service-b UP] ,ready to call spring-cloud gateway "+SPRING_CLOUD_GATEWAY,Thread.currentThread().getName());
+        log.info("[Mesh-service-b UP] ,ready to call spring-cloud gateway " + SPRING_CLOUD_GATEWAY, Thread.currentThread().getName());
+
+        log.info("ServiceEntry -->" + restTemplate.getForObject("http://external-sc-svc-c:80/sc-service-c/api/sc/c", String.class));
+
         return "[Mesh-service-b UP] response ok call -> " + restTemplate.getForObject(SPRING_CLOUD_GATEWAY + "/sc-service-c/api/sc/c", String.class);
     }
 
