@@ -22,9 +22,6 @@
         <module>sc-service-b</module>
         <module>sc-service-c</module>
         <module>gateway-zuul</module>
-        <module>mesh-service-b</module>
-        <module>mesh-sc-sidecar-service-b</module>
-        <module>gs-sc-svc</module>
     </modules>
 
     <properties>
