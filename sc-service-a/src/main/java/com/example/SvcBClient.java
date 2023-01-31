@@ -12,7 +12,7 @@ import java.util.List;
  * @date: 2019-05-06
  */
 @FeignClient("sc-service-b")
-public interface ScServiceBClient {
+public interface SvcBClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/sc/b")
     String apiB();

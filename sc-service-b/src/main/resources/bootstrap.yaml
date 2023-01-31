@@ -1,3 +1,5 @@
 spring:
   application:
     name: sc-service-b
+server:
+  port: 1012

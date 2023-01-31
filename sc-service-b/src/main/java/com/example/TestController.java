@@ -1,16 +1,10 @@
 package com.example;
 
-import com.netflix.loadbalancer.DynamicServerListLoadBalancer;
-import com.netflix.loadbalancer.ZoneAvoidanceRule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author : yangzq80@gmail.com
@@ -20,10 +14,10 @@ import java.util.List;
 @Slf4j
 public class TestController {
     @Resource
-    ScServiceCClient scServiceCClient;
+    SvcCClient svcCClient;
 
     @GetMapping("/api/sc/b")
     public String apiB() {
-        return "sc-service-b UP response ok call -> " + scServiceCClient.apiC();
+        return "sc-service-b UP response ok call -> " + svcCClient.apiC();
     }
 }

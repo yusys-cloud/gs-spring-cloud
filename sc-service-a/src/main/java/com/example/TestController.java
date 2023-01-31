@@ -18,11 +18,11 @@ import java.util.List;
 @Slf4j
 public class TestController {
     @Resource
-    ScServiceBClient scServiceBClient;
+    SvcBClient svcBClient;
 
     @GetMapping("/api/sc/a")
     public String apiA() {
-        return "sc-service-a UP call sc-service-b --> " + scServiceBClient.apiB();
+        return "sc-service-a UP call sc-service-b --> " + svcBClient.apiB();
     }
 
     @GetMapping("/user")
@@ -30,7 +30,7 @@ public class TestController {
         ZoneAvoidanceRule zoneAvoidanceRule;
         DynamicServerListLoadBalancer dynamicServerListLoadBalancer;
         log.info("get user--->");
-        return scServiceBClient.getUsers();
+        return svcBClient.getUsers();
     }
 
     @GetMapping("/test/user")

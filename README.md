@@ -2,9 +2,9 @@
 
 验证 spring-cloud 与 istio 相互调用 
 
-| Release Train |  Boot Version |
-| :--- | :---: | 
-| Finchley.SR4 | 2.0.9.RELEASE | 
+| spring-cloud-alibaba | spring-cloud |  Boot Version |
+| :--- | :--- | :---: | 
+| 2.2.10-RC1 | Hoxton.SR12 | 2.3.12.RELEASE | 
 
 ## Modules
 ### Spring-Cloud 微服务访问
@@ -12,27 +12,6 @@
 - [sc-service-b:1012](sc-service-b)
 - [sc-service-c:1013](sc-service-b)
 - [gateway-zuul:80](gateway-zuul)
-### 改造 sc-service-b 为 ServiceMesh 架构
-- [mesh-sc-sidecar-service-b:1014](mesh-sc-sidecar-service-b) 迁移过程中 proxy 服务，将spring-cloud 架构流量转发到 ServiceMesh 架构中
-- [mesh-service-b:1015](mesh-service-b) ServiceMesh 架构下改造的 sc-service-b,部署到 istio 中
-
-### [mesh-service-b](mesh-service-b)
-- IDE本地访问 mesh-service-b:远程调用spring-cloud-gateway/sc-service-c
-``` 
-curl -v http://localhost:1015/api/sc/b
-```
-- 通过istio-gateway访问 mesh-service-b
-``` 
-curl -v http://172.16.20.185:30061/api/sc/b
-```
-- 通过spring-cloud sc-service-a 访问
-``` 
-curl -v localhost:1011/api/sc/a
-```
-- mesh-service-b中访问 spring-cloud-gateway
-```
-curl -v http://172.16.20.172/sc-service-c/api/sc/c 
-```
 
 ## 测试用例
 - sc-service-a 访问 sc-service-b

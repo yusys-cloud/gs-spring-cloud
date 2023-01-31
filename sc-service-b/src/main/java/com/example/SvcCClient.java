@@ -12,7 +12,7 @@ import java.util.List;
  * @date: 2019-05-06
  */
 @FeignClient("sc-service-c")
-public interface ScServiceCClient {
+public interface SvcCClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/sc/c")
     String apiC();
