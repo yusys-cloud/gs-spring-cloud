@@ -1,13 +1,15 @@
 package com.example;
 
+import com.example.seata.User;
+import com.example.seata.UserRepository;
 import com.netflix.loadbalancer.DynamicServerListLoadBalancer;
 import com.netflix.loadbalancer.ZoneAvoidanceRule;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +21,9 @@ import java.util.List;
 public class TestController {
     @Resource
     SvcBClient svcBClient;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/api/sc/a")
     public String apiA() {
@@ -33,9 +38,9 @@ public class TestController {
         return svcBClient.getUsers();
     }
 
-    @GetMapping("/test/user")
+    @GetMapping("/db/user")
     public List<User> users() {
-        return Arrays.asList(new User(1L, "Trump"), new User(2L, "Donal2d"));
+        return userRepository.findAll();
     }
 
 

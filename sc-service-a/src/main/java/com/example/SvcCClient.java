@@ -12,12 +12,8 @@ import java.util.List;
  * @author : yangzq80@gmail.com
  * @date: 2019-05-06
  */
-@FeignClient("sc-service-b")
-public interface SvcBClient {
-
-    @RequestMapping(method = RequestMethod.GET, value = "/api/sc/b")
-    String apiB();
-
+@FeignClient("sc-service-c")
+public interface SvcCClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/v1/user")
     List<User> getUsers();

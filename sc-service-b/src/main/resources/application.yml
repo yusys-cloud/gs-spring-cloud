@@ -5,6 +5,14 @@ spring:
         server-addr: 127.0.0.1:8848
         username: nacos
         password: nacos
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/svc_b
+    username: root
+    password: admin
+    jpa:
+      hibernate:
+        ddl-auto: create
+      show-sql: true
 
 logging:
   level:
@@ -14,6 +22,6 @@ logging:
       springframework:
         web:
           servlet:
-            DispatcherServlet: DEBUG
+            DispatcherServlet: info
         cloud:
           sleuth: info

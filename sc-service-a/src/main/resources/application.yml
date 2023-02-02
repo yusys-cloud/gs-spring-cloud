@@ -5,6 +5,19 @@ spring:
         server-addr: 127.0.0.1:8848
         username: nacos
         password: nacos
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/svc_a
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+seata:
+  service:
+    grouplist:
+      default: 127.0.0.1:8091
 
 logging:
   level:

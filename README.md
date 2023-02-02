@@ -1,6 +1,6 @@
 # gs-spring-cloud
 
-验证 spring-cloud 与 istio 相互调用 
+分布式事务组件seata的使用demo，AT模式，集成nacos、springboot、springcloud、mybatis-plus，数据库采用mysql
 
 | spring-cloud-alibaba | spring-cloud |  Boot Version |
 | :--- | :--- | :---: | 
@@ -14,16 +14,39 @@
 - [gateway-zuul:80](gateway-zuul)
 
 ## 测试用例
-- sc-service-a 访问 sc-service-b
+
+测试分布式事务 svc-a -> svc-b ,svc-c
+```
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"100","id":"1"}' -v
+```
+money==200时候子事务 svc-b 异常，全局事务回滚
+```
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"200","id":"1"}' -v
+```
+
+money==300时候子事务 svc-c 异常，全局事务回滚
+```
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"300","id":"1"}' -v
+```
+
+基础CRUD
+
+```
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user -d '{"name":"go","money":"100","id":"1"}' -v
+curl localhost:1011/v1/user/1 -v
+```
+
+## seata自动配置功能
+- io.seata.spring.boot.autoconfigure.properties.client ServiceProperties在属性加载完后根据 0 == grouplist.size() 提供默认配置
 ``` 
-curl -v localhost:1011/api/sc/a
+seata:
+  service:
+    grouplist:
+      default: 127.0.0.1:8091
 ```
-- sc-service-b停止，sc-service-b-sidecar 代理流量到 ServiceMesh 集群内
-- 通过zuul网关访问
-```
-curl -i localhost/sc-service-a/api/sc/a
-curl -i localhost/sc-service-c/api/sc/c
-```
+
+- 高可用seata-server模式下从nacos注册中心读取配置
+
 
 ## links
 https://cloud.spring.io/spring-cloud-static/Finchley.SR4/single/spring-cloud.html
