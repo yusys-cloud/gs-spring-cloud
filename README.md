@@ -1,10 +1,53 @@
-# gs-spring-cloud
+# seata 使用nacos、db实现  HA 模式
 
 分布式事务组件seata的使用demo，AT模式，集成nacos、springboot、springcloud、mybatis-plus，数据库采用mysql
 
 | spring-cloud-alibaba | spring-cloud |  Boot Version |
 | :--- | :--- | :---: | 
 | 2.2.10-RC1 | Hoxton.SR12 | 2.3.12.RELEASE | 
+
+## seata-server配置nacos与db
+
+``` 
+seata:
+  registry:
+    # support: nacos, eureka, redis, zk, consul, etcd3, sofa
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      namespace:
+      cluster: default
+      username: nacos
+      password: nacos
+      context-path:
+  store:
+    # support: file 、 db 、 redis
+    mode: db
+    db:
+      datasource: druid
+      db-type: mysql
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/seata?rewriteBatchedStatements=true
+      user: root
+      password: admin
+```
+
+## seata-client应用配置 nacos
+
+``` 
+seata:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: "SEATA_GROUP"
+      namespace: ""
+      username: "nacos"
+      password: "nacos"
+```
 
 ## Modules
 ### Spring-Cloud 微服务访问

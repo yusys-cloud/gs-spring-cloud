@@ -15,9 +15,15 @@ spring:
     show-sql: true
 
 seata:
-  service:
-    grouplist:
-      default: 127.0.0.1:8091
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: "SEATA_GROUP"
+      namespace: ""
+      username: "nacos"
+      password: "nacos"
 
 logging:
   level:
