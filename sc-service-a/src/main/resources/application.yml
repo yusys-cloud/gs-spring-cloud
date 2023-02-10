@@ -26,6 +26,9 @@ seata:
       password: "nacos"
 
 logging:
+  pattern:
+    # 日志输出格式
+    console: "%d{yyyy-MM-dd HH:mm:ss} %clr(%5p) [%thread] %clr(%logger){cyan} : %msg%n"
   level:
     com:
       example: debug

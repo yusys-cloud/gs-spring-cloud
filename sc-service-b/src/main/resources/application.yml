@@ -36,3 +36,5 @@ logging:
             DispatcherServlet: info
         cloud:
           sleuth: info
+    io:
+      seata: info

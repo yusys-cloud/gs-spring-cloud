@@ -3,6 +3,9 @@ package com.example.seata;
 import com.example.SvcBClient;
 import com.example.SvcCClient;
 import io.seata.core.context.RootContext;
+import io.seata.rm.tcc.api.BusinessActionContext;
+import io.seata.rm.tcc.api.LocalTCC;
+import io.seata.rm.tcc.api.TwoPhaseBusinessAction;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,9 @@ public class BusinessService {
     @Autowired
     SvcCClient svcCClient;
 
+    @Autowired
+    UserService userService;
+
 
     @GlobalTransactional
     public Object testDT(User user) {
@@ -34,7 +40,7 @@ public class BusinessService {
 
         Map map = new HashMap();
 
-        map.put("svc-a", save(user));
+        map.put("svc-a", userService.prepare(user));
 
         map.put("svc-b", svcBClient.create(user));
 
@@ -46,6 +52,7 @@ public class BusinessService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
 
     public User findByID(Long id) {
 

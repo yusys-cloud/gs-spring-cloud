@@ -1,4 +1,4 @@
-# seata 使用nacos、db实现  HA 模式
+# seata 使用TCC模式
 
 分布式事务组件seata的使用demo，AT模式，集成nacos、springboot、springcloud、mybatis-plus，数据库采用mysql
 

@@ -17,12 +17,11 @@ public class BusinessService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired UserService userService;
+
     public User save(User user) {
 
-        if (user.money == 300) {
-            throw new RuntimeException("svc-c user.money=300 error");
-        }
-        return userRepository.save(user);
+        return userService.prepare(user);
     }
 
     public User findByID(Long id) {
