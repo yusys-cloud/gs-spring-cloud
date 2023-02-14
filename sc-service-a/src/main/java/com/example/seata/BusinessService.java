@@ -6,10 +6,14 @@ import io.seata.core.context.RootContext;
 import io.seata.rm.tcc.api.BusinessActionContext;
 import io.seata.rm.tcc.api.LocalTCC;
 import io.seata.rm.tcc.api.TwoPhaseBusinessAction;
+import io.seata.saga.engine.StateMachineEngine;
+import io.seata.saga.statelang.domain.ExecutionStatus;
+import io.seata.saga.statelang.domain.StateMachineInstance;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,20 +35,20 @@ public class BusinessService {
     SvcCClient svcCClient;
 
     @Autowired
-    UserService userService;
+    StateMachineEngine stateMachineEngine;
 
-
-    @GlobalTransactional
     public Object testDT(User user) {
-        log.info("Distributed Transaction begin ... xid: " + RootContext.getXID());
-
         Map map = new HashMap();
 
-        map.put("svc-a", userService.prepare(user));
+        Map<String, Object> startParams = new HashMap<>(1);
+        String businessKey = String.valueOf(System.currentTimeMillis());
+        startParams.put("user", user);
+        startParams.put("businessKey", businessKey);
 
-        map.put("svc-b", svcBClient.create(user));
+        StateMachineInstance inst = stateMachineEngine.start("testSagaSvcs", null, startParams);
 
-        map.put("svc-c", svcCClient.create(user));
+//        Assert.isTrue(ExecutionStatus.SU.equals(inst.getStatus()), "saga transaction execute failed. XID: " + inst.getId());
+//        log.info("saga transaction commit ****succeed****. XID: " + inst.getId());
 
         return map;
     }

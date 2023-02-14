@@ -1,10 +1,17 @@
-# seata 使用TCC模式
+# seata 使用 Saga 模式
 
 分布式事务组件seata的使用demo，AT模式，集成nacos、springboot、springcloud、mybatis-plus，数据库采用mysql
 
 | spring-cloud-alibaba | spring-cloud |  Boot Version |
 | :--- | :--- | :---: | 
 | 2.2.10-RC1 | Hoxton.SR12 | 2.3.12.RELEASE | 
+
+## 使用记录
+- 遇到TIMESTAMP类型报错时候设置:
+``` 
+set global explicit_defaults_for_timestamp = ON;
+```
+- 状态机 ServiceTask 少了参数会报主键重复
 
 ## seata-server配置nacos与db
 

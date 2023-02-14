@@ -1,0 +1,94 @@
+{
+  "Name": "testSagaSvcs",
+  "Comment": "buy a goods on line, add order, deduct account, deduct storage ",
+  "StartState": "SaveUser",
+  "Version": "0.0.1",
+  "States": {
+    "SaveUser": {
+      "Type": "ServiceTask",
+      "ServiceName": "userService",
+      "ServiceMethod": "createUser",
+      "CompensateState": "CompensateSvcA",
+      "Next": "ChoiceSvcBState",
+      "Input": [
+        "$.[businessKey]",
+        "$.[user]"
+      ],
+      "Output": {
+        "SaveUserResult": "$.#root"
+      },
+      "Status": {
+        "#root == true": "SU",
+        "#root == false": "FA",
+        "$Exception{java.lang.Throwable}": "UN"
+      }
+    },
+    "ChoiceSvcBState":{
+      "Type": "Choice",
+      "Choices":[
+        {
+          "Expression":"[SaveUserResult] == true",
+          "Next":"SvcBSaveUser"
+        }
+      ],
+      "Default":"Fail"
+    },
+    "SvcBSaveUser": {
+      "Type": "ServiceTask",
+      "ServiceName": "svcBUserService",
+      "ServiceMethod": "createUser",
+      "CompensateState": "CompensateSvcB",
+      "Input": [
+        "$.[businessKey]",
+        "$.[user]"
+      ],
+      "Output": {
+        "ReduceAccountResult": "$.#root"
+      },
+      "Status": {
+        "#root == true": "SU",
+        "#root == false": "FA",
+        "$Exception{java.lang.Throwable}": "UN"
+      },
+      "Catch": [
+        {
+          "Exceptions": [
+            "java.lang.Throwable"
+          ],
+          "Next": "CompensationTrigger"
+        }
+      ],
+      "Next": "Succeed"
+    },
+
+    "CompensateSvcA": {
+      "Type": "ServiceTask",
+      "ServiceName": "userServicea",
+      "ServiceMethod": "deleteUser",
+      "Input": [
+        "$.[businessKey]"
+      ]
+    },
+    "CompensateSvcB": {
+      "Type": "ServiceTask",
+      "ServiceName": "svcBUserService",
+      "ServiceMethod": "deleteUser",
+      "Input": [
+        "$.[businessKey]"
+      ]
+    },
+
+    "CompensationTrigger": {
+      "Type": "CompensationTrigger",
+      "Next": "Fail"
+    },
+    "Succeed": {
+      "Type":"Succeed"
+    },
+    "Fail": {
+      "Type":"Fail",
+      "ErrorCode": "PURCHASE_FAILED",
+      "Message": "purchase failed"
+    }
+  }
+}

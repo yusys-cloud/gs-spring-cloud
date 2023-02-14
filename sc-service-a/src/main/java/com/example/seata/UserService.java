@@ -1,10 +1,5 @@
 package com.example.seata;
 
-import io.seata.core.context.RootContext;
-import io.seata.rm.tcc.api.BusinessActionContext;
-import io.seata.rm.tcc.api.BusinessActionContextParameter;
-import io.seata.rm.tcc.api.LocalTCC;
-import io.seata.rm.tcc.api.TwoPhaseBusinessAction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +9,22 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@LocalTCC
 public class UserService {
 
-    @TwoPhaseBusinessAction(name = "TccActionA", commitMethod = "commit", rollbackMethod = "rollback")
-    public User prepare(@BusinessActionContextParameter("user") User user) {
-        log.info("Distributed --- Transaction --- tcc-try ... xid: {}", RootContext.getXID());
+    public boolean createUser(String businessKey, User user) {
+
+        log.info("saga ---- svc-a ----- create user: {}", user);
+        if (user.money == 100) {
+            log.error("svc-a user.money=100 error :{}", user);
+//            throw new RuntimeException("svc-a user.money=100 error");
+            return false;
+        }
         user.setId(1L);
-        return user;
+        return true;
     }
 
-    public void commit(BusinessActionContext actionContext) {
-        log.info("Distributed --- Transaction --- tcc-commit ... xid: {}  Parameters --- : {}", actionContext.getXid(), actionContext.getActionContext("user"));
-    }
-
-    public void rollback(BusinessActionContext actionContext) {
-
-        log.info("Distributed --- Transaction --- tcc-cancel ... xid: {}  Parameters --- : {}", actionContext.getXid(), actionContext.getActionContext("user"));
+    public boolean deleteUser(String businessKey) {
+        log.info("saga ---- svc-a ----- compensate ----- create key: {}", businessKey);
+        return true;
     }
 }
