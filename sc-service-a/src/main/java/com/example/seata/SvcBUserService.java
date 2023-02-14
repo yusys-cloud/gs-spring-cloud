@@ -5,6 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 /**
  * @author yangzq80@gmail.com
  * @date 2/14/23
@@ -15,20 +18,28 @@ public class SvcBUserService {
 
     @Autowired
     SvcBClient svcBClient;
-
-    public boolean createUser(String businessKey, User user) {
-
-        log.info("saga ---- svc-b ----- create user: {}", user);
-//        svcBClient.create(user);
-        if (user.money==200){
-            log.error("svc-b money 200 error");
-            return false;
+    public boolean reduce(String businessKey, BigDecimal amount, Map<String, Object> params) {
+        if(params != null) {
+            Object throwException = params.get("throwException");
+            if (throwException != null && "true".equals(throwException.toString())) {
+                throw new RuntimeException("reduce balance failed");
+            }
         }
+        if (amount.compareTo(BigDecimal.valueOf(100))==0){
+            throw new RuntimeException("svc-a money=100 error");
+        }
+        log.info("svc-b ------ reduce balance succeed, amount: " + amount + ", businessKey:" + businessKey);
         return true;
     }
 
-    public boolean deleteUser(String businessKey) {
-        log.info("saga ---- svc-b ----- compensate ----- create key: {}", businessKey);
+    public boolean compensateReduce(String businessKey, Map<String, Object> params) {
+        if(params != null) {
+            Object throwException = params.get("throwException");
+            if (throwException != null && "true".equals(throwException.toString())) {
+                throw new RuntimeException("compensate reduce balance failed");
+            }
+        }
+        log.info("svc-b *** compensate *** reduce balance succeed, businessKey:" + businessKey);
         return true;
     }
 

@@ -1,21 +1,21 @@
 {
-  "Name": "testSagaSvcs",
-  "Comment": "buy a goods on line, add order, deduct account, deduct storage ",
-  "StartState": "SaveUser",
+  "Name": "reduceInventoryAndBalance",
+  "Comment": "reduce inventory then reduce balance in a transaction",
+  "StartState": "ReduceInventory",
   "Version": "0.0.1",
   "States": {
-    "SaveUser": {
+    "ReduceInventory": {
       "Type": "ServiceTask",
-      "ServiceName": "userService",
-      "ServiceMethod": "createUser",
-      "CompensateState": "CompensateSvcA",
-      "Next": "ChoiceSvcBState",
+      "ServiceName": "svcAUserService",
+      "ServiceMethod": "reduce",
+      "CompensateState": "CompensateReduceInventory",
+      "Next": "ChoiceState",
       "Input": [
         "$.[businessKey]",
-        "$.[user]"
+        "$.[count]"
       ],
       "Output": {
-        "SaveUserResult": "$.#root"
+        "reduceInventoryResult": "$.#root"
       },
       "Status": {
         "#root == true": "SU",
@@ -23,27 +23,30 @@
         "$Exception{java.lang.Throwable}": "UN"
       }
     },
-    "ChoiceSvcBState":{
+    "ChoiceState": {
       "Type": "Choice",
-      "Choices":[
+      "Choices": [
         {
-          "Expression":"[SaveUserResult] == true",
-          "Next":"SvcBSaveUser"
+          "Expression": "[reduceInventoryResult] == true",
+          "Next": "ReduceBalance"
         }
       ],
-      "Default":"Fail"
+      "Default": "Fail"
     },
-    "SvcBSaveUser": {
+    "ReduceBalance": {
       "Type": "ServiceTask",
       "ServiceName": "svcBUserService",
-      "ServiceMethod": "createUser",
-      "CompensateState": "CompensateSvcB",
+      "ServiceMethod": "reduce",
+      "CompensateState": "CompensateReduceBalance",
       "Input": [
         "$.[businessKey]",
-        "$.[user]"
+        "$.[amount]",
+        {
+          "throwException": "$.[mockReduceBalanceFail]"
+        }
       ],
       "Output": {
-        "ReduceAccountResult": "$.#root"
+        "compensateReduceBalanceResult": "$.#root"
       },
       "Status": {
         "#root == true": "SU",
@@ -60,33 +63,31 @@
       ],
       "Next": "Succeed"
     },
-
-    "CompensateSvcA": {
+    "CompensateReduceInventory": {
       "Type": "ServiceTask",
-      "ServiceName": "userServicea",
-      "ServiceMethod": "deleteUser",
+      "ServiceName": "svcAUserService",
+      "ServiceMethod": "compensateReduce",
       "Input": [
         "$.[businessKey]"
       ]
     },
-    "CompensateSvcB": {
+    "CompensateReduceBalance": {
       "Type": "ServiceTask",
       "ServiceName": "svcBUserService",
-      "ServiceMethod": "deleteUser",
+      "ServiceMethod": "compensateReduce",
       "Input": [
         "$.[businessKey]"
       ]
     },
-
     "CompensationTrigger": {
       "Type": "CompensationTrigger",
       "Next": "Fail"
     },
     "Succeed": {
-      "Type":"Succeed"
+      "Type": "Succeed"
     },
     "Fail": {
-      "Type":"Fail",
+      "Type": "Fail",
       "ErrorCode": "PURCHASE_FAILED",
       "Message": "purchase failed"
     }

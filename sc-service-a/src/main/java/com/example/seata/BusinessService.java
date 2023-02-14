@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -40,15 +41,19 @@ public class BusinessService {
     public Object testDT(User user) {
         Map map = new HashMap();
 
-        Map<String, Object> startParams = new HashMap<>(1);
+        Map<String, Object> startParams = new HashMap<>(3);
         String businessKey = String.valueOf(System.currentTimeMillis());
-        startParams.put("user", user);
         startParams.put("businessKey", businessKey);
+        startParams.put("count", 10);
+        startParams.put("amount", new BigDecimal("100"));
 
-        StateMachineInstance inst = stateMachineEngine.start("testSagaSvcs", null, startParams);
+        //sync test
+        StateMachineInstance inst = stateMachineEngine.startWithBusinessKey("reduceInventoryAndBalance", null,
+                businessKey, startParams);
 
-//        Assert.isTrue(ExecutionStatus.SU.equals(inst.getStatus()), "saga transaction execute failed. XID: " + inst.getId());
-//        log.info("saga transaction commit ****succeed****. XID: " + inst.getId());
+        Assert.isTrue(ExecutionStatus.SU.equals(inst.getStatus()),
+                "saga transaction execute failed. XID: " + inst.getId());
+        System.out.println("saga transaction commit succeed. XID: " + inst.getId());
 
         return map;
     }
