@@ -19,7 +19,7 @@ public class SvcBUserService {
     public boolean createUser(String businessKey, User user) {
 
         log.info("saga ---- svc-b ----- create user: {}", user);
-//        svcBClient.create(user);
+        svcBClient.create(user);
         if (user.money==200){
             log.error("svc-b money 200 error");
             return false;

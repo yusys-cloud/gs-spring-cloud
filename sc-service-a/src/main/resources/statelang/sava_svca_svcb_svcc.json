@@ -1,21 +1,21 @@
 {
   "Name": "testSagaSvcs",
-  "Comment": "buy a goods on line, add order, deduct account, deduct storage ",
-  "StartState": "SaveUser",
+  "Comment": "reduce inventory then reduce balance in a transaction",
+  "StartState": "ServiceA",
   "Version": "0.0.1",
   "States": {
-    "SaveUser": {
+    "ServiceA": {
       "Type": "ServiceTask",
-      "ServiceName": "userService",
+      "ServiceName": "svcAUserService",
       "ServiceMethod": "createUser",
       "CompensateState": "CompensateSvcA",
-      "Next": "ChoiceSvcBState",
+      "Next": "ChoiceState",
       "Input": [
         "$.[businessKey]",
         "$.[user]"
       ],
       "Output": {
-        "SaveUserResult": "$.#root"
+        "reduceInventoryResult": "$.#root"
       },
       "Status": {
         "#root == true": "SU",
@@ -23,27 +23,30 @@
         "$Exception{java.lang.Throwable}": "UN"
       }
     },
-    "ChoiceSvcBState":{
+    "ChoiceState": {
       "Type": "Choice",
-      "Choices":[
+      "Choices": [
         {
-          "Expression":"[SaveUserResult] == true",
-          "Next":"SvcBSaveUser"
+          "Expression": "[reduceInventoryResult] == true",
+          "Next": "ServiceB"
         }
       ],
-      "Default":"Fail"
+      "Default": "Fail"
     },
-    "SvcBSaveUser": {
+    "ServiceB": {
       "Type": "ServiceTask",
       "ServiceName": "svcBUserService",
       "ServiceMethod": "createUser",
       "CompensateState": "CompensateSvcB",
       "Input": [
         "$.[businessKey]",
-        "$.[user]"
+        "$.[user]",
+        {
+          "throwException": "$.[mockReduceBalanceFail]"
+        }
       ],
       "Output": {
-        "ReduceAccountResult": "$.#root"
+        "compensateReduceBalanceResult": "$.#root"
       },
       "Status": {
         "#root == true": "SU",
@@ -60,13 +63,13 @@
       ],
       "Next": "Succeed"
     },
-
     "CompensateSvcA": {
       "Type": "ServiceTask",
-      "ServiceName": "userServicea",
+      "ServiceName": "svcAUserService",
       "ServiceMethod": "deleteUser",
       "Input": [
-        "$.[businessKey]"
+        "$.[businessKey]",
+        "$.[user]"
       ]
     },
     "CompensateSvcB": {
@@ -74,19 +77,19 @@
       "ServiceName": "svcBUserService",
       "ServiceMethod": "deleteUser",
       "Input": [
-        "$.[businessKey]"
+        "$.[businessKey]",
+        "$.[user]"
       ]
     },
-
     "CompensationTrigger": {
       "Type": "CompensationTrigger",
       "Next": "Fail"
     },
     "Succeed": {
-      "Type":"Succeed"
+      "Type": "Succeed"
     },
     "Fail": {
-      "Type":"Fail",
+      "Type": "Fail",
       "ErrorCode": "PURCHASE_FAILED",
       "Message": "purchase failed"
     }

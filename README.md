@@ -99,7 +99,5 @@ seata:
 
 
 ## links
-https://cloud.spring.io/spring-cloud-static/Finchley.SR4/single/spring-cloud.html
-
-## zipkin下载
-https://repo1.maven.org/maven2/io/zipkin/zipkin-server/2.23.2/zipkin-server-2.23.2-exec.jar
+- https://blog.csdn.net/zjj2006/article/details/108723488
+- https://www.sofastack.tech/blog/seata-saga-flexible-financial-applications/

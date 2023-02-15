@@ -45,10 +45,9 @@ public class BusinessService {
         startParams.put("user", user);
         startParams.put("businessKey", businessKey);
 
-        StateMachineInstance inst = stateMachineEngine.start("testSagaSvcs", null, startParams);
+        StateMachineInstance inst = stateMachineEngine.startWithBusinessKey("testSagaSvcs", null, businessKey,startParams);
 
-//        Assert.isTrue(ExecutionStatus.SU.equals(inst.getStatus()), "saga transaction execute failed. XID: " + inst.getId());
-//        log.info("saga transaction commit ****succeed****. XID: " + inst.getId());
+        log.info("saga transaction commit ****succeed****. XID: " + inst.getId());
 
         return map;
     }

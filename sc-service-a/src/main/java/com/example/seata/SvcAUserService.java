@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class UserService {
+public class SvcAUserService {
 
     public boolean createUser(String businessKey, User user) {
 
         log.info("saga ---- svc-a ----- create user: {}", user);
         if (user.money == 100) {
             log.error("svc-a user.money=100 error :{}", user);
-//            throw new RuntimeException("svc-a user.money=100 error");
-            return false;
+            throw new RuntimeException("svc-a user.money=100 error");
         }
         user.setId(1L);
         return true;
