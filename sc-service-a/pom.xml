@@ -3,12 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.example</groupId>
-        <artifactId>gs-spring-cloud</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>com.zjtlcb.one</groupId>
+        <artifactId>onedp-cloud</artifactId>
+        <version>V4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sc-service-a</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.zjtlcb.one</groupId>
+            <artifactId>ondep-cloud-seata</artifactId>
+            <version>V4.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

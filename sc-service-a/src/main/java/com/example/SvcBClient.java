@@ -27,4 +27,7 @@ public interface SvcBClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/v1/user")
     User create(User user);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/user/tcc")
+    User tcc(User user);
 }

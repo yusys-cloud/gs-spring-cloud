@@ -1,5 +1,5 @@
 {
-  "Name": "testSagaSvcs",
+  "Name": "dbStateMachineApp",
   "Comment": "reduce inventory then reduce balance in a transaction",
   "StartState": "ServiceA",
   "Version": "0.0.1",

@@ -4,16 +4,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Optional;
+
 /**
  * @author yangzq80@gmail.com
  * @date 2/1/23
  */
 @RestController
 @RequestMapping("/v1/user")
-public class BusinessController {
+public class SeataController {
 
     @Autowired
     BusinessService businessService;
+
+//    @Autowired
+    SagaService sagaService;
+
+    @PostMapping("/testSaga")
+    public ResponseEntity<Object> testSaga(@RequestBody User user) {
+        Object entity = sagaService.testSaga(user);
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/testAT")
+    public ResponseEntity<Object> testAT(@RequestBody User user) {
+        Map entity = businessService.testAT(user);
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/testTCC")
+    public ResponseEntity<Object> testTCC(@RequestBody User user) {
+        Map entity = businessService.testTCC(user);
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody User user) {

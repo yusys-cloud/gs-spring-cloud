@@ -3,17 +3,10 @@ package com.example.seata;
 import com.example.SvcBClient;
 import com.example.SvcCClient;
 import io.seata.core.context.RootContext;
-import io.seata.rm.tcc.api.BusinessActionContext;
-import io.seata.rm.tcc.api.LocalTCC;
-import io.seata.rm.tcc.api.TwoPhaseBusinessAction;
-import io.seata.saga.engine.StateMachineEngine;
-import io.seata.saga.statelang.domain.ExecutionStatus;
-import io.seata.saga.statelang.domain.StateMachineInstance;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,25 +27,8 @@ public class BusinessService {
     @Autowired
     SvcCClient svcCClient;
 
-    @Autowired
-    StateMachineEngine stateMachineEngine;
-
-    public Object testDT(User user) {
-        Map map = new HashMap();
-
-        Map<String, Object> startParams = new HashMap<>(1);
-        String businessKey = String.valueOf(System.currentTimeMillis());
-        startParams.put("user", user);
-        startParams.put("businessKey", businessKey);
-
-        StateMachineInstance inst = stateMachineEngine.startWithBusinessKey("testSagaSvcs", null, businessKey,startParams);
-
-        log.info("saga transaction commit ****succeed****. XID: " + inst.getId());
-
-        return map;
-    }
-
     public User save(User user) {
+        log.info("save user:{}", user);
         return userRepository.save(user);
     }
 
@@ -68,5 +44,32 @@ public class BusinessService {
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @GlobalTransactional
+    public Map testAT(User user) {
+        log.info("Distributed-----Transaction-----AT------- begin ... xid: " + RootContext.getXID());
+
+        Map map = new HashMap();
+
+        map.put("svc-a", save(user));
+
+        map.put("svc-b", svcBClient.create(user));
+
+        return map;
+    }
+
+
+    @GlobalTransactional
+    public Map testTCC(User user) {
+        log.info("Distributed-----Transaction-----TCC------- begin ... xid: " + RootContext.getXID());
+
+        Map map = new HashMap();
+
+        map.put("svc-a", save(user));
+
+        map.put("svc-b", svcBClient.tcc(user));
+
+        return map;
     }
 }

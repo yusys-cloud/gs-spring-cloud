@@ -15,15 +15,15 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @LocalTCC
-public class UserService {
+public class TCCService {
 
-    @TwoPhaseBusinessAction(name = "TccActionC", commitMethod = "commit", rollbackMethod = "rollback")
+    @TwoPhaseBusinessAction(name = "TccActionB", commitMethod = "commit", rollbackMethod = "rollback")
     public User prepare(@BusinessActionContextParameter("user") User user) {
         log.info("Distributed --- Transaction --- tcc-try ... xid: {}", RootContext.getXID());
 
-        if (user.money == 300) {
-            log.error("svc-c user.money=300 error :{}", user);
-            throw new RuntimeException("svc-c user.money=300 error");
+        if (user.money == 200) {
+            log.error("svc-b user.money=200 error :{}", user);
+            throw new RuntimeException("svc-b user.money=200 error");
         }
         user.setId(1L);
         return user;

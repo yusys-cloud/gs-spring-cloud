@@ -65,19 +65,19 @@ seata:
 
 ## 测试用例
 
-测试分布式事务 svc-a -> svc-b ,svc-c
+SAGA 模式
+``` 
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testSaga -d '{"name":"go","money":"1001","id":"1"}' -v
 ```
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"100","id":"1"}' -v
+AT 模式
+``` 
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testAT -d '{"name":"go","money":"1001","id":"1"}' -v
 ```
-money==200时候子事务 svc-b 异常，全局事务回滚
-```
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"200","id":"1"}' -v
+TCC 模式
+``` 
+curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testTCC -d '{"name":"go","money":"1001","id":"1"}' -v
 ```
 
-money==300时候子事务 svc-c 异常，全局事务回滚
-```
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testDT -d '{"name":"go","money":"300","id":"1"}' -v
-```
 
 基础CRUD
 

@@ -14,10 +14,18 @@ public class BusinessController {
 
     @Autowired
     BusinessService businessService;
+    @Autowired
+    TCCService TCCService;
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody User user) {
         User entity = businessService.save(user);
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/tcc")
+    public ResponseEntity<User> tcc(@RequestBody User user) {
+        User entity = TCCService.prepare(user);
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 

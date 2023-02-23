@@ -1,5 +1,6 @@
 package com.example.seata;
 
+import io.seata.core.context.RootContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,17 @@ public class BusinessService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserService userService;
 
     public User save(User user) {
 
-        return userService.prepare(user);
+        log.info("Distributed-----Transaction----------- begin ... xid: " + RootContext.getXID());
+
+        if (user.money == 200) {
+            log.error("svc-b user.money=200 error :{}", user);
+            throw new RuntimeException("svc-b user.money=200 error");
+        }
+
+        return userRepository.save(user);
     }
 
     public User findByID(Long id) {
