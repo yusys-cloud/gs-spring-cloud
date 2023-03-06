@@ -18,7 +18,7 @@ spring:
 onedp:
   cloud:
     saga:
-      enabled: false
+      enabled: true
 
 seata:
   registry:
@@ -30,6 +30,10 @@ seata:
       namespace: ""
       username: "nacos"
       password: "nacos"
+#  service:
+#    vgroup-mapping:
+#      default_tx_group: "default"
+
 
 logging:
   pattern:

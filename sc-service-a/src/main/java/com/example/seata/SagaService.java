@@ -5,6 +5,7 @@ import com.example.SvcCClient;
 import io.seata.core.context.RootContext;
 import io.seata.saga.engine.StateMachineEngine;
 import io.seata.saga.statelang.domain.StateMachineInstance;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,6 +34,8 @@ public class SagaService {
     @Autowired
     StateMachineEngine stateMachineEngine;
 
+
+    @GlobalTransactional
     public Object testSaga(User user) {
         Map map = new HashMap();
 

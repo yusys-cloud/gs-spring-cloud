@@ -67,15 +67,16 @@ seata:
 
 SAGA 模式
 ``` 
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testSaga -d '{"name":"go","money":"1001","id":"1"}' -v
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"1001","id":"1"}' -v localhost:1011/v1/user/testSaga
 ```
 AT 模式
 ``` 
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"200","id":"1"}' -v localhost:1011/v1/user/testAT
 curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testAT -d '{"name":"go","money":"1001","id":"1"}' -v
 ```
 TCC 模式
 ``` 
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testTCC -d '{"name":"go","money":"1001","id":"1"}' -v
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"200","id":"1"}' -v localhost:1011/v1/user/testTCC
 ```
 
 

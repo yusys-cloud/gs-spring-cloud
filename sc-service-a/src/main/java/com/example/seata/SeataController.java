@@ -18,7 +18,7 @@ public class SeataController {
     @Autowired
     BusinessService businessService;
 
-//    @Autowired
+    @Autowired
     SagaService sagaService;
 
     @PostMapping("/testSaga")

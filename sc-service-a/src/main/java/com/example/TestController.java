@@ -2,8 +2,6 @@ package com.example;
 
 import com.example.seata.User;
 import com.example.seata.UserRepository;
-import com.netflix.loadbalancer.DynamicServerListLoadBalancer;
-import com.netflix.loadbalancer.ZoneAvoidanceRule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +30,8 @@ public class TestController {
 
     @GetMapping("/user")
     public List<User> getUsers() {
-        ZoneAvoidanceRule zoneAvoidanceRule;
-        DynamicServerListLoadBalancer dynamicServerListLoadBalancer;
+//        ZoneAvoidanceRule zoneAvoidanceRule;
+//        DynamicServerListLoadBalancer dynamicServerListLoadBalancer;
         log.info("get user--->");
         return svcBClient.getUsers();
     }
