@@ -11,7 +11,7 @@ import java.util.List;
  * @author : yangzq80@gmail.com
  * @date: 2019-05-06
  */
-@FeignClient("sc-service-b")
+@FeignClient(value = "sc-service-b",url = "dev.com")
 public interface SvcBClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/api/sc/b")
