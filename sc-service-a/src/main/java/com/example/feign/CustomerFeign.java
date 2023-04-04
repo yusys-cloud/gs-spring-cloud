@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
  * @author yangzq80@gmail.com
  * @date 3/10/23
  */
-@Configuration
+//@Configuration
 public class CustomerFeign {
 
     Retryer retryer = new Retryer.Default();
