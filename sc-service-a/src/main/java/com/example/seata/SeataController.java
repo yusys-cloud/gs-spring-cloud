@@ -41,16 +41,22 @@ public class SeataController {
 
     long i = 0L;
 
-    @RequestMapping("/auto")
-    public ResponseEntity<Object> auto(@RequestParam("type") String type) {
+
+    @GetMapping("/auto")
+    public ResponseEntity<Object> auto(@RequestParam String type) {
         i++;
         Object entity = null;
-        if ("at" == type) {
-            User user = new User();
-            user.setId(i);
+        User user = new User();
+        user.setId(i);
+        user.setName(type + i);
+        user.setMoney(1000 + i);
+        if ("at".equals(type)) {
             entity = businessService.testAT(user);
+        } else if ("tcc".equals(type)) {
+            entity = businessService.testTCC(user);
+        } else if ("saga".equals(type)) {
+            entity = sagaService.testSaga(user);
         }
-
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 }

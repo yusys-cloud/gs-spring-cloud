@@ -1,6 +1,7 @@
 package com.example.seata;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SvcAUserService {
 
+    @Autowired
+    UserRepository userRepository;
+
     public boolean createUser(String businessKey, User user) {
 
         log.debug("saga ---- svc-a ----- create user: {}", user);
@@ -18,12 +22,12 @@ public class SvcAUserService {
             log.error("svc-a user.money=100 error :{}", user);
             throw new RuntimeException("svc-a user.money=100 error");
         }
-        user.setId(1L);
+        userRepository.save(user);
         return true;
     }
 
     public boolean deleteUser(String businessKey) {
-        log.debug("saga ---- svc-a ----- compensate ----- create key: {}", businessKey);
+        log.info("saga ---- svc-a ----- compensate ----- create key: {}", businessKey);
         return true;
     }
 }

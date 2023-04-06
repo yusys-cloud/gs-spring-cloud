@@ -66,6 +66,13 @@ seata:
 ## 测试用例
 使用的流行度情况是：AT > TCC > Saga
 
+自动测试
+``` 
+curl  -v http://localhost:1011/v1/seata/auto?type=at
+curl  -v http://localhost:1011/v1/seata/auto?type=tcc
+curl  -v http://localhost:1011/v1/seata/auto?type=saga
+```
+
 AT 模式
 ``` 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"2002","id":"1"}' -v localhost:1011/v1/seata/testAT
