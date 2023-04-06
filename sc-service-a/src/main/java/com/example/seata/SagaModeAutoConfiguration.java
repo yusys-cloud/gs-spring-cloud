@@ -1,4 +1,4 @@
-package com.zjtlcb.one.onedp.cloud.seata.configura;
+package com.example.seata;
 
 import io.seata.saga.engine.config.DbStateMachineConfig;
 import io.seata.saga.engine.impl.ProcessCtrlStateMachineEngine;
@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * SEATA提供的Saga模式是基于状态机引擎来实现的，提供db存储的状态机默认配置
  */
 @Configuration
-@ConditionalOnProperty(name = "onedp.cloud.saga.enabled", matchIfMissing = false)
+@ConditionalOnProperty(name = "saga.enabled", matchIfMissing = true)
 public class SagaModeAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(SagaModeAutoConfiguration.class);

@@ -14,12 +14,6 @@ spring:
       ddl-auto: create
     show-sql: true
 
-# 启用默认saga状态机应用dbStateMachineApp配置
-onedp:
-  cloud:
-    saga:
-      enabled: true
-
 seata:
   registry:
     type: nacos
@@ -41,12 +35,12 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} %clr(%5p) [%thread] %clr(%logger){cyan} : %msg%n"
   level:
     com:
-      example: debug
+      example: info
     org:
       springframework:
         web:
           servlet:
-            DispatcherServlet: DEBUG
+            DispatcherServlet: debug
         cloud:
           sleuth: info
     io:

@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
-@ConditionalOnProperty(name = "onedp.cloud.saga.enabled", matchIfMissing = false)
+@ConditionalOnProperty(name = "saga.enabled", matchIfMissing = true)
 public class SagaService {
     @Autowired
     UserRepository userRepository;

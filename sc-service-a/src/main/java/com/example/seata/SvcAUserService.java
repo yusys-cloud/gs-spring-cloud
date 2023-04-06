@@ -13,7 +13,7 @@ public class SvcAUserService {
 
     public boolean createUser(String businessKey, User user) {
 
-        log.info("saga ---- svc-a ----- create user: {}", user);
+        log.debug("saga ---- svc-a ----- create user: {}", user);
         if (user.money == 100) {
             log.error("svc-a user.money=100 error :{}", user);
             throw new RuntimeException("svc-a user.money=100 error");
@@ -23,7 +23,7 @@ public class SvcAUserService {
     }
 
     public boolean deleteUser(String businessKey) {
-        log.info("saga ---- svc-a ----- compensate ----- create key: {}", businessKey);
+        log.debug("saga ---- svc-a ----- compensate ----- create key: {}", businessKey);
         return true;
     }
 }

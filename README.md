@@ -64,21 +64,20 @@ seata:
 - [gateway-zuul:80](gateway-zuul)
 
 ## 测试用例
+使用的流行度情况是：AT > TCC > Saga
 
-SAGA 模式
-``` 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"1001","id":"1"}' -v localhost:1011/v1/user/testSaga
-```
 AT 模式
 ``` 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"200","id":"1"}' -v localhost:1011/v1/user/testAT
-curl -X POST -H "Content-Type: application/json" localhost:1011/v1/user/testAT -d '{"name":"go","money":"1001","id":"1"}' -v
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"2002","id":"1"}' -v localhost:1011/v1/seata/testAT
 ```
 TCC 模式
 ``` 
-curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"200","id":"1"}' -v localhost:1011/v1/user/testTCC
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"2003","id":"1"}' -v localhost:1011/v1/seata/testTCC
 ```
-
+SAGA 模式
+``` 
+curl -X POST -H "Content-Type: application/json" -d '{"name":"go","money":"2001","id":"1"}' -v localhost:1011/v1/seata/testSaga
+```
 
 基础CRUD
 

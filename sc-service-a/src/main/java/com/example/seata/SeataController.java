@@ -5,14 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * @author yangzq80@gmail.com
  * @date 2/1/23
  */
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1/seata")
 public class SeataController {
 
     @Autowired
@@ -20,12 +19,6 @@ public class SeataController {
 
     @Autowired
     SagaService sagaService;
-
-    @PostMapping("/testSaga")
-    public ResponseEntity<Object> testSaga(@RequestBody User user) {
-        Object entity = sagaService.testSaga(user);
-        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
-    }
 
     @PostMapping("/testAT")
     public ResponseEntity<Object> testAT(@RequestBody User user) {
@@ -39,32 +32,25 @@ public class SeataController {
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        User entity = businessService.save(user);
+    @PostMapping("/testSaga")
+    public ResponseEntity<Object> testSaga(@RequestBody User user) {
+        Object entity = sagaService.testSaga(user);
         return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> read(@PathVariable Long id) {
-        User entity = businessService.findByID(id);
-        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
-    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        User current = businessService.findByID(id);
-        if (current == null) {
-            return ResponseEntity.notFound().build();
+    long i = 0L;
+
+    @RequestMapping("/auto")
+    public ResponseEntity<Object> auto(@RequestParam("type") String type) {
+        i++;
+        Object entity = null;
+        if ("at" == type) {
+            User user = new User();
+            user.setId(i);
+            entity = businessService.testAT(user);
         }
-        user.setId(id);
-        User updated = businessService.save(user);
-        return ResponseEntity.ok(updated);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        businessService.deleteById(id);
-        return ResponseEntity.ok().build();
+        return entity != null ? ResponseEntity.ok(entity) : ResponseEntity.notFound().build();
     }
 }

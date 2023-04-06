@@ -21,7 +21,7 @@ public class BusinessService {
 
     public User save(User user) {
 
-        log.info("Distributed-----Transaction----------- begin ... xid: " + RootContext.getXID());
+        log.debug("Distributed-----Transaction----------- begin ... xid: " + RootContext.getXID());
 
         if (user.money == 200) {
             log.error("svc-b user.money=200 error :{}", user);

@@ -28,7 +28,7 @@ public class BusinessService {
     SvcCClient svcCClient;
 
     public User save(User user) {
-        log.info("save user:{}", user);
+        log.debug("save user:{}", user);
         return userRepository.save(user);
     }
 
@@ -48,7 +48,7 @@ public class BusinessService {
 
     @GlobalTransactional
     public Map testAT(User user) {
-        log.info("Distributed-----Transaction-----AT------- begin ... xid: " + RootContext.getXID());
+        log.debug("Distributed-----Transaction-----AT------- begin ... xid: " + RootContext.getXID());
 
         Map map = new HashMap();
 
@@ -62,7 +62,7 @@ public class BusinessService {
 
     @GlobalTransactional
     public Map testTCC(User user) {
-        log.info("Distributed-----Transaction-----TCC------- begin ... xid: " + RootContext.getXID());
+        log.debug("Distributed-----Transaction-----TCC------- begin ... xid: " + RootContext.getXID());
 
         Map map = new HashMap();
 
